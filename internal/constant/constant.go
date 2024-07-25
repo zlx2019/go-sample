@@ -1,6 +1,6 @@
 package constant
 
-const (
 
+// 全局常量
 
-)
+const ()

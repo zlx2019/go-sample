@@ -1,13 +1,8 @@
 package main
 
-import (
-	"go-sample/configs"
-)
+import "go-sample/cmd/app"
 
 // main
 func main() {
-	configs.Viper()
-	select {
-
-	}
+	app.Run()
 }

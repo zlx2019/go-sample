@@ -6,6 +6,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"go-sample/internal/constant"
+	logs "go-sample/internal/logger"
 )
 
 //  默认配置文件路径
@@ -20,6 +21,7 @@ var configFile string
 func init() {
 	flag.StringVar(&mode, "m", constant.Dev, "server runtime mode.")
 	flag.StringVar(&configFile, "c", defaultConfigPath, "server config file.")
+	flag.Parse()
 }
 
 // Viper 加载配置文件
@@ -30,7 +32,7 @@ func Viper() (*Config, *viper.Viper){
 	vp.SetConfigType(configType)
 	err := vp.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Load config file error: %s \n", err))
+		logs.Logger.Panicf("Error on loading config file: %s \n", err.Error())
 	}
 	var config Config
 	// 监听配置文件，动态更新
@@ -43,7 +45,8 @@ func Viper() (*Config, *viper.Viper){
 	// 映射为实体
 	err = vp.Unmarshal(&config)
 	if err != nil {
-		panic(fmt.Errorf("Unmarshal config error: %s \n", err.Error()))
+		logs.Logger.Panicf("Error on parsing config file: %s \n", err.Error())
 	}
+	logs.Log.Info("loading config success.")
 	return &config, vp
 }
