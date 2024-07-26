@@ -24,15 +24,15 @@ func init() {
 	flag.Parse()
 }
 
-// Viper 加载配置文件
+// Setup 加载配置文件
 // 优先级: 命令行 -> 环境变量 -> 默认值
-func Viper() (*Config, *viper.Viper){
+func Setup() (*Config, *viper.Viper){
 	vp := viper.New()
 	vp.SetConfigFile(configFile)
 	vp.SetConfigType(configType)
 	err := vp.ReadInConfig()
 	if err != nil {
-		logs.Logger.Panicf("Error on loading config file: %s \n", err.Error())
+		logs.Logger.PanicSf("Error on loading config file: %s \n", err.Error())
 	}
 	var config Config
 	// 监听配置文件，动态更新
@@ -45,8 +45,8 @@ func Viper() (*Config, *viper.Viper){
 	// 映射为实体
 	err = vp.Unmarshal(&config)
 	if err != nil {
-		logs.Logger.Panicf("Error on parsing config file: %s \n", err.Error())
+		logs.Logger.PanicSf("Error on parsing config file: %s \n", err.Error())
 	}
-	logs.Log.Info("loading config success.")
+	logs.Logger.Info("loading config success.")
 	return &config, vp
 }

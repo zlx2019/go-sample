@@ -1,6 +1,8 @@
 module go-sample
 
-go 1.20
+go 1.22
+
+toolchain go1.22.3
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0
@@ -22,13 +24,14 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/zlx2019/spoor v1.1.2 // indirect
-	go.uber.org/atomic v1.10.0 // indirect
+	github.com/zlx2019/spoor v1.1.4 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.24.0 // indirect
+	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

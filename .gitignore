@@ -23,8 +23,8 @@ deploy/data/*
 config.yaml
 
 # Log files
-internal/logger
-log
+#internal/logger
+logs
 
 deploy/otel/.data
 
