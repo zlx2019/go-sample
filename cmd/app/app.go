@@ -7,13 +7,16 @@ package app
 import (
 	"go-sample/configs"
 	logs "go-sample/internal/logger"
+	"go-sample/internal/server"
 )
 
 // Run App 服务启动入口
 func Run() {
 	// 初始化日志组件
 	logs.Setup()
-	// 加载配置文件.
+	// 初始化服务配置
 	configs.Setup()
-	logs.Logger.Info("Hello")
+	// 启动HTTP服务
+	server.StartUp()
 }
+
