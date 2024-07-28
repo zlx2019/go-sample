@@ -7,6 +7,7 @@ package ping
 // Ping API
 type Ping struct {}
 
+
 func (p *Ping) GetName() string {
 	return "ping"
 }

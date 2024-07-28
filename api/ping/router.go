@@ -19,4 +19,11 @@ func (p *Ping) Router(router *gin.RouterGroup) {
 	})
 }
 
-
+//func (p *Ping) Router2(router *route.RouterGroup) {
+//	router.GET("", func(c context.Context, ctx *app.RequestContext) {
+//		ctx.JSON(http.StatusOK, gin.H{
+//			"code": 0,
+//			"message": "OK",
+//		})
+//	})
+//}

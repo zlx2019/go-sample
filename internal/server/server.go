@@ -6,8 +6,6 @@ package server
 import (
 	"context"
 	"errors"
-	"github.com/gin-gonic/gin"
-	"go-sample/api"
 	"go-sample/configs"
 	logs "go-sample/internal/logger"
 	"net/http"
@@ -17,27 +15,13 @@ import (
 	"time"
 )
 
-// Setup 创建HTTP服务,并初始化 API 路由
-func Setup() http.Handler {
-	engine := gin.New()
-	gin.SetMode(configs.C.Server.Mode)
-	// 注册中间件
-	engine.Use(gin.Logger(), gin.Recovery())
-	// 初始化API路由
-	for _, m := range api.Modules {
-		logs.Logger.InfoSf("Init module: [%s]", m.GetName())
-		m.Init()
-		m.Router(engine.Group("/" + m.GetName()))
-	}
-	return engine
-}
 
 // StartUp 服务
-func StartUp() {
+func StartUp(handler http.Handler) {
 	// HTTP 服务配置
 	server := &http.Server{
 		Addr:        configs.C.Server.Addr(),
-		Handler:     Setup(),
+		Handler:     handler,
 		ReadTimeout: time.Second * 30,
 		WriteTimeout: time.Second * 30,
 		MaxHeaderBytes: 1 << 20,

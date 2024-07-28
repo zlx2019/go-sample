@@ -6,6 +6,7 @@ package app
 
 import (
 	"go-sample/configs"
+	"go-sample/internal/engine"
 	logs "go-sample/internal/logger"
 	"go-sample/internal/server"
 )
@@ -16,7 +17,9 @@ func Run() {
 	logs.Setup()
 	// 初始化服务配置
 	configs.Setup()
-	// 启动HTTP服务
-	server.StartUp()
+	// 初始化 HTTP 引擎
+	handler := engine.SetupGinEngine()
+	// 启动服务
+	server.StartUp(handler)
 }
 
