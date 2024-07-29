@@ -6,8 +6,12 @@ package server
 import (
 	"context"
 	"errors"
+	"github.com/gin-gonic/gin"
+	"go-sample/api"
 	"go-sample/configs"
-	logs "go-sample/internal/logger"
+	"go-sample/internal/global"
+	"go-sample/internal/middlewares"
+	"go-sample/internal/setup/logger"
 	"net/http"
 	"os"
 	"os/signal"
@@ -15,15 +19,29 @@ import (
 	"time"
 )
 
+// Setup 创建并初始化 Gin 服务引擎
+func setup() http.Handler {
+	engine := gin.New()
+	gin.SetMode(configs.C.Server.Mode)
+	// 注册中间件
+	engine.Use(middlewares.Cors(), middlewares.Recovery(),gin.Logger())
+	// 初始化API路由
+	for _, m := range api.Modules {
+		logs.Logger.InfoSf("Init module: [%s]", m.GetName())
+		m.Init()
+		m.Router(engine.Group("/" + m.GetName()))
+	}
+	return engine
+}
 
 // StartUp 服务
-func StartUp(handler http.Handler) {
+func StartUp() {
 	// HTTP 服务配置
 	server := &http.Server{
-		Addr:        configs.C.Server.Addr(),
-		Handler:     handler,
-		ReadTimeout: time.Second * 30,
-		WriteTimeout: time.Second * 30,
+		Addr:           global.Conf.Server.Addr(),
+		Handler:        setup(),
+		ReadTimeout:    time.Second * 30,
+		WriteTimeout:   time.Second * 30,
 		MaxHeaderBytes: 1 << 20,
 	}
 	defer server.Close()
@@ -36,16 +54,16 @@ func StartUp(handler http.Handler) {
 	// 异步启动HTTP Server
 	go func() {
 		logs.Logger.InfoSf("Listening and serving HTTP on %s", server.Addr)
-		if err := server.ListenAndServe(); err != nil{
+		if err := server.ListenAndServe(); err != nil {
 			if !errors.Is(err, http.ErrServerClosed) {
-				logs.Logger.FatalSf("Error on server startup: ",err.Error())
+				logs.Logger.FatalSf("Error on server startup: %s", err.Error())
 			}
 			// 服务被主动关闭
 			stopped <- struct{}{}
 		}
 	}()
 	// 阻塞进程，直到收到信号
-	<- stop
+	<-stop
 	logs.Logger.Info("Start shutting down services...")
 
 	// 停止 HTTP 服务
@@ -53,6 +71,6 @@ func StartUp(handler http.Handler) {
 		logs.Logger.ErrorSf("Failed to shut down service.")
 	}
 	// 等待 HTTP 服务终止
-	<- stopped
+	<-stopped
 	logs.Logger.Info("HTTP server closed")
 }

@@ -6,9 +6,10 @@ package app
 
 import (
 	"go-sample/configs"
-	"go-sample/internal/engine"
-	logs "go-sample/internal/logger"
-	"go-sample/internal/server"
+	"go-sample/internal/global"
+	"go-sample/internal/setup/database"
+	"go-sample/internal/setup/logger"
+	"go-sample/internal/setup/server"
 )
 
 // Run App 服务启动入口
@@ -16,10 +17,9 @@ func Run() {
 	// 初始化日志组件
 	logs.Setup()
 	// 初始化服务配置
-	configs.Setup()
-	// 初始化 HTTP 引擎
-	handler := engine.SetupGinEngine()
-	// 启动服务
-	server.StartUp(handler)
+	global.Conf, global.Viper = configs.Setup()
+	// 初始化数据库.
+	database.Setup()
+	// 初始化并启动 HTTP 服务
+	server.StartUp()
 }
-
