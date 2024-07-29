@@ -31,7 +31,7 @@ func Setup() {
 		db.SetConnMaxLifetime(dbConf.Pool.MaxLifeTime)
 	}
 	// 自动创建表
-	if dbConf.CreateTable {
+	if dbConf.CreateTables {
 		if err = autoCreateTables(gdb); err != nil {
 			logs.Logger.FatalSf("failed to auto create tables: %s", err.Error())
 		}

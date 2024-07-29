@@ -12,7 +12,7 @@ db:
   username: root
   password: root
   dbName: sample
-  create-table: true
+  createTable: true
   debug: true
   slowSql: 3s
   # 数据库连接池

@@ -8,7 +8,7 @@ type Server struct {
 	Host      string `yaml:"host"`
 	Port      int    `yaml:"port"`
 	Mode      string `yaml:"mode"`
-	ApiPrefix string `yaml:"api_prefix"`
+	ApiPrefix string `yaml:"apiPrefix"`
 }
 
 func (s Server) Addr() string {
