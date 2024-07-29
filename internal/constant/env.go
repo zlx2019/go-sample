@@ -3,7 +3,7 @@ package constant
 // 环境常量
 
 const (
-	Dev  = "dev"
+	Dev  = "debug"
 	Test = "test"
-	Prod = "prod"
+	Release = "release"
 )
