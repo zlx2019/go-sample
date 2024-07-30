@@ -6,15 +6,11 @@ package ping
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // Router Ping
 func (p *Ping) Router(router *gin.RouterGroup) {
-	router.GET("", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"message": "OK",
-		})
-	})
+	router.GET("", p.Ping)
+	router.GET("/pool", p.PoolStatus)
+	router.GET("/db", p.DBStatus)
 }

@@ -33,22 +33,23 @@ func Recovery() gin.HandlerFunc {
 				}
 				// 获取 HTTP Request
 				request, _ := httputil.DumpRequest(c.Request, false)
-
-				// 连接已无法写回数据
 				if brokenPipe {
+					// 连接已无法使用，记录日志并直接结束.
 					zap.L().Error(c.Request.URL.Path, zap.Any("error", err), zap.String("request", string(request)))
 					c.Error(err.(error)) //nolint: errcheck
 					c.Abort()
 					return
 				}
 				// 记录日志
-				logs.Logger.ErrorSf("Request Path: [%s] err: %v", c.Request.URL.Path, err)
-				// 返回500
-				c.AbortWithStatusJSON(200, gin.H{
+				if e, ok := err.(error); ok {
+					logs.Logger.Sugar().
+						WithOptions(zap.AddCallerSkip(1)).
+						Errorf("handler request [%s] failed, caused by: %v", c.Request.URL.Path, e)
+				}
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 					"code":    1,
 					"message": "系统错误.",
 				})
-				c.AbortWithStatus(http.StatusInternalServerError)
 			}
 		}()
 		c.Next()

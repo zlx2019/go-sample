@@ -48,6 +48,6 @@ func Setup() (*Config, *viper.Viper) {
 	if err != nil {
 		logs.Logger.PanicSf("failed on parsing config file: %s \n", err.Error())
 	}
-	logs.Logger.Info("loading config success.")
+	logs.Logger.Info("[loading config success]")
 	return &config, vp
 }

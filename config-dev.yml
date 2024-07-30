@@ -2,7 +2,7 @@
 server:
   name: app-sample
   host: 127.0.0.1
-  port: 15001
+  port: 9898
   mode: debug
 
 # 数据库配置
@@ -19,4 +19,17 @@ db:
   pool:
     maxOpenConn: 300  # 最大连接
     maxIdleConn: 10   # 最小空闲连接数
-    maxLifeTime: 1h
+    maxLifeTime: 1h   # 连接复用最大时长
+# 协程池配置
+pool:
+  size: 3000            # 池的最大容量
+  disablePurge: false   # true 表示不回收空闲的协程
+  expiryDuration: 10s   # 协程最大空闲时长
+  preAlloc: false       # 初始化时预先分配
+  nonblocking: false    # 是否为非阻塞模式,
+  maxBlockingTasks: 300 # 阻塞模式下，可等待的最大任务数
+  closeTimeout: 10s     # 关闭池子时 阻塞等待时长
+
+
+
+

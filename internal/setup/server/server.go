@@ -19,10 +19,11 @@ import (
 	"time"
 )
 
-// Setup 创建并初始化 Gin 服务引擎
+// 创建并初始化 Gin 服务引擎
 func setup() http.Handler {
 	engine := gin.New()
 	gin.SetMode(configs.C.Server.Mode)
+	gin.ForceConsoleColor()
 	// 注册中间件
 	engine.Use(middlewares.Cors(), middlewares.Recovery(),gin.Logger())
 	// 初始化API路由
@@ -34,8 +35,8 @@ func setup() http.Handler {
 	return engine
 }
 
-// StartUp 服务
-func StartUp() {
+// Startup 启动 HTTP 服务
+func Startup() {
 	// HTTP 服务配置
 	server := &http.Server{
 		Addr:           global.Conf.Server.Addr(),
@@ -52,16 +53,16 @@ func StartUp() {
 	stopped := make(chan struct{})
 
 	// 异步启动HTTP Server
-	go func() {
+	global.Pool.Submit(func() {
 		logs.Logger.InfoSf("Listening and serving HTTP on %s", server.Addr)
 		if err := server.ListenAndServe(); err != nil {
 			if !errors.Is(err, http.ErrServerClosed) {
 				logs.Logger.FatalSf("Error on server startup: %s", err.Error())
 			}
 			// 服务被主动关闭
-			stopped <- struct{}{}
+			close(stopped)
 		}
-	}()
+	})
 	// 阻塞进程，直到收到信号
 	<-stop
 	logs.Logger.Info("Start shutting down services...")

@@ -25,3 +25,8 @@ func Setup() {
 	}
 	Logger = logger
 }
+
+// Cleanup 刷新日志缓冲，写入日志文件
+func Cleanup() {
+	_ = Logger.Sync()
+}

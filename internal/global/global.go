@@ -1,6 +1,7 @@
 package global
 
 import (
+	"github.com/panjf2000/ants/v2"
 	"github.com/spf13/viper"
 	"go-sample/configs"
 	"gorm.io/gorm"
@@ -14,4 +15,6 @@ var (
 
 	// Dc 数据库客户端
 	Dc *gorm.DB
+	// Pool 协程池
+	Pool *ants.Pool
 )
