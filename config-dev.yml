@@ -1,7 +1,7 @@
 # 服务相关配置
 server:
   name: app-sample
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 9898
   mode: debug
 
