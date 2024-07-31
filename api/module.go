@@ -5,7 +5,7 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"go-sample/api/ping"
 )
 
@@ -13,7 +13,7 @@ import (
 type Module interface {
 	GetName() string
 	Init()
-	Router(router *gin.RouterGroup)
+	Router(router *fiber.App)
 }
 
 // Modules 要加载的模块列表

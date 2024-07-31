@@ -2,7 +2,7 @@ package status
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"net/http"
 )
 
@@ -14,7 +14,7 @@ type Response struct {
 }
 
 // Ok 成功响应
-func Ok(ctx *gin.Context, data ...any) {
+func Ok(ctx *fiber.Ctx, data ...any) error {
 	response := Response{
 		Code: ok.Code,
 		Msg:  ok.Message,
@@ -22,11 +22,11 @@ func Ok(ctx *gin.Context, data ...any) {
 	if len(data) > 0 {
 		response.Data = data[0]
 	}
-	writeTo(ctx, http.StatusOK, response)
+	return writeTo(ctx, http.StatusOK, response)
 }
 
 // Fail 失败响应
-func Fail(ctx *gin.Context, err error) {
+func Fail(ctx *fiber.Ctx, err error) error {
 	response := Response{}
 	var se *SysError
 	if errors.As(err, &se) {
@@ -36,11 +36,11 @@ func Fail(ctx *gin.Context, err error) {
 		response.Code = fail.Code
 		response.Msg = fail.Message
 	}
-	writeTo(ctx, http.StatusInternalServerError, response)
+	return writeTo(ctx, http.StatusInternalServerError, response)
 }
 
 // FailMsg 失败响应
-func FailMsg(ctx *gin.Context, messages ...string) () {
+func FailMsg(ctx *fiber.Ctx, messages ...string) error {
 	response := Response{
 		Code: fail.Code,
 		Msg: fail.Message,
@@ -48,11 +48,13 @@ func FailMsg(ctx *gin.Context, messages ...string) () {
 	if len(messages) > 0 {
 		response.Msg = messages[0]
 	}
-	writeTo(ctx, http.StatusInternalServerError, response)
+	return writeTo(ctx, http.StatusInternalServerError, response)
 }
 
 
 // 将响应流写回客户端.
-func writeTo(ctx *gin.Context, httpStatus int, response Response) {
-	ctx.JSON(httpStatus, response)
+func writeTo(ctx *fiber.Ctx, httpStatus int, response Response) error {
+	//ctx.JSON(httpStatus, response)
+	ctx.Status(http.StatusOK)
+	return ctx.JSON(response)
 }

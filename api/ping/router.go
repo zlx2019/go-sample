@@ -5,12 +5,14 @@
 package ping
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
+
 // Router Ping
-func (p *Ping) Router(router *gin.RouterGroup) {
-	router.GET("", p.Ping)
-	router.GET("/pool", p.PoolStatus)
-	router.GET("/db", p.DBStatus)
+func (p *Ping) Router(app *fiber.App) {
+	router := app.Group(p.GetName())
+	router.Get("", p.Ping)
+	router.Get("/pool", p.PoolStatus)
+	router.Get("/db", p.DBStatus)
 }
