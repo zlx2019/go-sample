@@ -9,7 +9,7 @@ import (
 
 // Ping 服务状态探测
 func (p *Ping) Ping(ctx *fiber.Ctx) error {
-	return status.Ok(ctx)
+	return status.Ok(ctx, "OK")
 }
 
 // PoolStatus 查看服务协程池状态信息

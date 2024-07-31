@@ -3,12 +3,14 @@ package status
 import (
 	"errors"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
 )
+
+
+type R map[string]any
 
 // Response 统一响应
 type Response struct {
-	Code int8    `json:"code"`
+	Code int    `json:"code"`
 	Msg  string `json:"message"`
 	Data any    `json:"data"`
 }
@@ -22,11 +24,11 @@ func Ok(ctx *fiber.Ctx, data ...any) error {
 	if len(data) > 0 {
 		response.Data = data[0]
 	}
-	return writeTo(ctx, http.StatusOK, response)
+	return writeTo(ctx, fiber.StatusOK, response)
 }
 
-// Fail 失败响应
-func Fail(ctx *fiber.Ctx, err error) error {
+// FailWithErr 失败响应
+func FailWithErr(ctx *fiber.Ctx, err error) error {
 	response := Response{}
 	var se *SysError
 	if errors.As(err, &se) {
@@ -34,13 +36,15 @@ func Fail(ctx *fiber.Ctx, err error) error {
 		response.Msg = se.Message
 	}else {
 		response.Code = fail.Code
-		response.Msg = fail.Message
+		if err.Error() == "" {
+			response.Msg = fail.Message
+		}
 	}
-	return writeTo(ctx, http.StatusInternalServerError, response)
+	return writeTo(ctx, fiber.StatusInternalServerError, response)
 }
 
-// FailMsg 失败响应
-func FailMsg(ctx *fiber.Ctx, messages ...string) error {
+// Fail 失败响应
+func Fail(ctx *fiber.Ctx, messages ...string) error {
 	response := Response{
 		Code: fail.Code,
 		Msg: fail.Message,
@@ -48,13 +52,21 @@ func FailMsg(ctx *fiber.Ctx, messages ...string) error {
 	if len(messages) > 0 {
 		response.Msg = messages[0]
 	}
-	return writeTo(ctx, http.StatusInternalServerError, response)
+	return writeTo(ctx, fiber.StatusInternalServerError, response)
 }
 
 
 // 将响应流写回客户端.
-func writeTo(ctx *fiber.Ctx, httpStatus int, response Response) error {
-	//ctx.JSON(httpStatus, response)
-	ctx.Status(http.StatusOK)
-	return ctx.JSON(response)
+func writeTo(ctx *fiber.Ctx, status int, response Response) error {
+	return ctx.Status(status).JSON(response)
+}
+
+
+// OfErr 根据Error构建响应信息
+func OfErr(err error) Response {
+	var se *SysError
+	if errors.As(err, &se) {
+		return Response{Code: se.Code, Msg: se.Message}
+	}
+	return Response{Code: fail.Code, Msg:  err.Error()}
 }

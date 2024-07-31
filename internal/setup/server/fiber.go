@@ -7,6 +7,7 @@ import (
 	"go-sample/api"
 	"go-sample/internal/constant"
 	"go-sample/internal/global"
+	"go-sample/internal/middlewares"
 	logs "go-sample/internal/setup/logger"
 	"os"
 	"os/signal"
@@ -30,8 +31,9 @@ func setup() *fiber.App {
 		EnablePrintRoutes: true,
 		ColorScheme: fiber.DefaultColors,
 
-		// 默认的错误处理函数,待自定义
-		ErrorHandler: fiber.DefaultErrorHandler,
+		// 错误处理器
+		ErrorHandler: middlewares.RecoveryHandler,
+
 		// JSON 编解码，默认使用标准库，可替换成性能更高的库
 		JSONDecoder: json.Unmarshal,
 		JSONEncoder: json.Marshal,
