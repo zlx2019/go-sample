@@ -3,7 +3,9 @@ package server
 import (
 	"encoding/json"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"go-sample/api"
+	"go-sample/internal/constant"
 	"go-sample/internal/global"
 	logs "go-sample/internal/setup/logger"
 	"os"
@@ -38,12 +40,12 @@ func setup() *fiber.App {
 	})
 
 	// 日志中间件
-	//app.Use(logger.New(logger.Config{
-	//	Done:          nil,
-	//	CustomTags:    nil,
-	//	Format:        "${time} | ${method} | ${path} | ${status} | ${latency} | ${ip} | ${error}\n",
-	//	TimeFormat:    constant.DefaultTimeFormat,
-	//}))
+	app.Use(logger.New(logger.Config{
+		Done:          nil,
+		CustomTags:    nil,
+		Format:        "${time} | ${method} | ${path} | ${status} | ${latency} | ${ip} | ${error}\n",
+		TimeFormat:    constant.DefaultTimeFormat,
+	}))
 
 	// 注册 API 路由
 	for _, m := range api.Modules {
