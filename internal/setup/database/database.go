@@ -14,33 +14,37 @@ import (
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
+	"sync"
 	"time"
 )
 
 var _db *gorm.DB
+var once sync.Once
 
 // Setup 数据库组件
 func Setup() {
-	dbConf := global.Conf.DB
-	gdb, err := gorm.Open(mysql.New(withMysqlConfig(dbConf)), withGormConfig(dbConf))
-	if err != nil {
-		logs.Logger.FatalSf("failed to connect database: %s", err.Error())
-	}
-	// 配置连接池
-	if db, err := gdb.DB(); err == nil {
-		db.SetMaxOpenConns(dbConf.Pool.MaxOpenConn)	// 能打开数据库连接的最大数量
-		db.SetMaxIdleConns(dbConf.Pool.MaxIdleConn)	// 空闲连接最大数量
-		db.SetConnMaxLifetime(dbConf.Pool.MaxLifeTime) // 连接可复用最大时间
-	}
-	// 自动创建表
-	if dbConf.CreateTables {
-		if err = autoCreateTables(gdb); err != nil {
-			logs.Logger.FatalSf("failed to auto create tables: %s", err.Error())
+	once.Do(func() {
+		dbConf := global.Conf.DB
+		gdb, err := gorm.Open(mysql.New(withMysqlConfig(dbConf)), withGormConfig(dbConf))
+		if err != nil {
+			logs.Logger.FatalSf("failed to connect database: %s", err.Error())
 		}
-	}
-	_db = gdb
-	global.Dc = _db
-	logs.Logger.Info("[connected database success]")
+		// 配置连接池
+		if db, err := gdb.DB(); err == nil {
+			db.SetMaxOpenConns(dbConf.Pool.MaxOpenConn)	// 能打开数据库连接的最大数量
+			db.SetMaxIdleConns(dbConf.Pool.MaxIdleConn)	// 空闲连接最大数量
+			db.SetConnMaxLifetime(dbConf.Pool.MaxLifeTime) // 连接可复用最大时间
+		}
+		// 自动创建表
+		if dbConf.CreateTables {
+			if err = autoCreateTables(gdb); err != nil {
+				logs.Logger.FatalSf("failed to auto create tables: %s", err.Error())
+			}
+		}
+		_db = gdb
+		global.Dc = _db
+		logs.Logger.Info("[connected database success]")
+	})
 }
 
 // CleanUp 关闭数据库连接池
