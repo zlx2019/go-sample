@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/gofiber/fiber/v2"
 	"go-sample/internal/status/errs"
+	"net/http"
 )
 
 const (
@@ -29,7 +30,7 @@ func Ok(ctx *fiber.Ctx, data ...any) error {
 	if len(data) > 0 {
 		response.Data = data[0]
 	}
-	return writeTo(ctx, fiber.StatusOK, response)
+	return writeTo(ctx, response)
 }
 
 // Fail 失败响应
@@ -38,13 +39,13 @@ func Fail(ctx *fiber.Ctx, messages ...string) error {
 	if len(messages) > 0 {
 		response.Msg = messages[0]
 	}
-	return writeTo(ctx, fiber.StatusInternalServerError, response)
+	return writeTo(ctx, response)
 }
 
 // FailWithErr 失败响应
 func FailWithErr(ctx *fiber.Ctx, err error) error {
 	response := OfErr(err)
-	return writeTo(ctx, fiber.StatusInternalServerError, response)
+	return writeTo(ctx, response)
 }
 
 // OfErr 根据未知错误，构建响应信息
@@ -65,8 +66,8 @@ func OfErr(err error) Response {
 	return response
 }
 
-func writeTo(ctx *fiber.Ctx, status int, response Response) error {
-	return ctx.Status(status).JSON(response)
+func writeTo(ctx *fiber.Ctx, response Response) error {
+	return ctx.Status(http.StatusOK).JSON(response)
 }
 
 func of(err *errs.Error) Response {

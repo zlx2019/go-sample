@@ -3,10 +3,8 @@ package server
 import (
 	"encoding/json"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"go-sample/api"
-	"go-sample/internal/constant"
 	"go-sample/internal/global"
 	"go-sample/internal/middlewares"
 	logs "go-sample/internal/setup/logger"
@@ -44,14 +42,7 @@ func setup() {
 			DisableStartupMessage: false,
 		})
 		// 注册中间件
-		server.Use(middlewares.Cors(), recover.New())
-		// 日志中间件
-		server.Use(logger.New(logger.Config{
-			Done:          nil,
-			CustomTags:    nil,
-			Format:        "${time} | ${method} | ${path} | ${status} | ${latency} | ${ip} | ${error}\n",
-			TimeFormat:    constant.DefaultTimeFormat,
-		}))
+		server.Use(recover.New(),middlewares.Cors(), middlewares.Logger())
 		// 注册 所有模块API
 		for _, m := range api.Modules {
 			m.Init()
