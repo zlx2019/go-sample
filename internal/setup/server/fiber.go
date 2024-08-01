@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"go-sample/api"
 	"go-sample/internal/constant"
 	"go-sample/internal/global"
@@ -12,6 +13,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 
@@ -31,15 +33,18 @@ func setup() *fiber.App {
 		EnablePrintRoutes: true,
 		ColorScheme: fiber.DefaultColors,
 
-		// 错误处理器
-		ErrorHandler: middlewares.RecoveryHandler,
+		// 服务错误统一处理器
+		ErrorHandler: middlewares.GlobalErrorHandler,
 
 		// JSON 编解码，默认使用标准库，可替换成性能更高的库
 		JSONDecoder: json.Unmarshal,
 		JSONEncoder: json.Marshal,
 		// 关闭输出调试信息
-		DisableStartupMessage: true,
+		DisableStartupMessage: false,
 	})
+
+	// 注册中间件
+	app.Use(middlewares.Cors(), recover.New())
 
 	// 日志中间件
 	app.Use(logger.New(logger.Config{
@@ -49,7 +54,8 @@ func setup() *fiber.App {
 		TimeFormat:    constant.DefaultTimeFormat,
 	}))
 
-	// 注册 API 路由
+
+	// 注册 所有模块API
 	for _, m := range api.Modules {
 		m.Init()
 		m.Router(app)
@@ -59,26 +65,21 @@ func setup() *fiber.App {
 
 // Startup 启动HTTP 服务
 func Startup() {
-	// 创建服务
 	server := setup()
-	stop := make(chan os.Signal)
-	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
-	stopped := make(chan struct{})
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	// 异步启动 HTTP Server
 	_ = global.Pool.Submit(func() {
 		if err := server.Listen(global.Conf.Server.Addr()); err != nil {
 			logs.Logger.FatalSf("Error on server startup: %s", err.Error())
 		}
-		close(stopped)
 	})
 	// 等待关闭信号
 	<- stop
-	logs.Logger.Info("start shutting down services.....")
+	logs.Logger.Info("start shutting down services...")
 	// 关闭 HTTP Server
-	if err := server.Shutdown(); err != nil {
+	if err := server.ShutdownWithTimeout(time.Second *3); err != nil {
 		logs.Logger.ErrorSf("failed to shutdown server: %s", err.Error())
 	}
-	// 等待关闭完成.
-	<- stopped
 	logs.Logger.Info("HTTP server closed success.")
 }

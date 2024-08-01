@@ -11,7 +11,6 @@ import (
 
 // Module API基层模块
 type Module interface {
-	GetName() string
 	Init()
 	Router(router *fiber.App)
 }

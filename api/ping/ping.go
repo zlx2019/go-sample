@@ -7,11 +7,6 @@ package ping
 // Ping API
 type Ping struct {}
 
-
-func (p *Ping) GetName() string {
-	return "ping"
-}
-
-// Init Ping API 初始化
+// Init Ping-模块初始化
 func (p *Ping) Init() {
 }
