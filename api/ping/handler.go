@@ -4,6 +4,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go-sample/internal/global"
 	"go-sample/internal/status"
+	"go-sample/internal/status/errs"
+	"go-sample/internal/tool/clone"
 	"runtime"
 )
 
@@ -24,6 +26,15 @@ func (p *Ping) PoolStatus(ctx  *fiber.Ctx) error {
 		Available:     pool.Free(),
 	}
 	return status.Ok(ctx, reply)
+}
+
+// RedisStatus 查看Redis连接信息
+func (p *Ping) RedisStatus(ctx *fiber.Ctx) error {
+	state, err := clone.Clone[RedisStatusReply](global.Rc.PoolStats())
+	if err != nil {
+		return errs.FailErr
+	}
+	return status.Ok(ctx, state)
 }
 
 // DBStatus 查看数据库状态信息

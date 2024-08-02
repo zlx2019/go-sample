@@ -6,6 +6,7 @@ var C = Config{}
 type Config struct {
 	Server Server   `yaml:"server"`
 	DB     DataBase `yaml:"db"`
-	Redis  Redis    `yaml:"redis"`
+	Redis  Redis    `yaml:"cache"`
 	Pool   Pool     `yaml:"pool"`
 }
+

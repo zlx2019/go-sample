@@ -9,10 +9,11 @@ import (
 )
 
 
-// Router Ping-模块路由
-func (p *Ping) Router(app *fiber.App) {
+// Route Ping api路由
+func (p *Ping) Route(app *fiber.App) {
 	router := app.Group("/ping")
 	router.Get("", p.Ping)
 	router.Get("/pool", p.PoolStatus)
 	router.Get("/db", p.DBStatus)
+	router.Get("/redis", p.RedisStatus)
 }

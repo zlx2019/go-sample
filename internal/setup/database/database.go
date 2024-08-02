@@ -52,7 +52,7 @@ func CleanUp()  {
 	if db, err := _db.DB(); err == nil{
 		// 关闭连接池
 		_ = db.Close()
-		logs.Logger.Info("closed database success.")
+		logs.Logger.Info("【 Cleanup database complete 】")
 	}
 }
 

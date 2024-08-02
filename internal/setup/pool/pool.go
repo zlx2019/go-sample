@@ -47,6 +47,6 @@ func CleanUp() {
 	if err := pool.ReleaseTimeout(time.Second * 10); err != nil {
 		logs.Logger.ErrorSf("cleanup coroutine pool timeout: %s", err.Error())
 	}else {
-		logs.Logger.Info("cleanup coroutine pool success.")
+		logs.Logger.Info("【 Cleanup coroutine pool complete】")
 	}
 }

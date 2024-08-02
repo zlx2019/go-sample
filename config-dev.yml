@@ -2,7 +2,7 @@
 server:
   name: app-sample
   host: 0.0.0.0
-  port: 9898
+  port: 12001
   mode: debug
 
 # 数据库配置
@@ -20,6 +20,20 @@ db:
     maxOpenConn: 300  # 最大连接
     maxIdleConn: 10   # 最小空闲连接数
     maxLifeTime: 1h   # 连接复用最大时长
+
+# redis 配置
+redis:
+  host: 127.0.0.1
+  port: 6379
+  username:
+  password:
+  db: 0
+  pool:
+    maxSize: 100
+    minIdleConnNum: 20
+    maxIdleConnNum: 40
+    ConnMaxIdleTime: 10m
+
 # 协程池配置
 pool:
   size: 3000            # 池的最大容量

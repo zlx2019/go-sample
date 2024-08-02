@@ -7,6 +7,7 @@ package ping
 // Ping API
 type Ping struct {}
 
+
 // Init Ping-模块初始化
 func (p *Ping) Init() {
 }

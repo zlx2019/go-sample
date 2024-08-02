@@ -12,7 +12,7 @@ import (
 // Module API基层模块
 type Module interface {
 	Init()
-	Router(router *fiber.App)
+	Route(app *fiber.App)
 }
 
 // Modules 要加载的模块列表

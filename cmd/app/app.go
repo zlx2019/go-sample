@@ -7,6 +7,7 @@ package app
 import (
 	"go-sample/configs"
 	"go-sample/internal/global"
+	"go-sample/internal/setup/cache"
 	"go-sample/internal/setup/database"
 	"go-sample/internal/setup/logger"
 	"go-sample/internal/setup/pool"
@@ -22,6 +23,7 @@ func Startup() {
 	global.Conf, global.Viper = configs.Setup()
 	// 初始化数据库.
 	database.Setup()
+	cache.Setup()
 	// 初始化协程池
 	pool.Setup()
 	// 初始化并启动 HTTP 服务
@@ -32,6 +34,7 @@ func Startup() {
 	// ===================== CleanUp ===============================
 	// 释放数据库连接池
 	database.CleanUp()
+	cache.CleanUp()
 	// 释放协程池
 	pool.CleanUp()
 	// 刷新日志缓冲

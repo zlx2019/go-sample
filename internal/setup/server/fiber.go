@@ -43,13 +43,14 @@ func setup() {
 		})
 		// 注册中间件
 		server.Use(recover.New(),middlewares.Cors(), middlewares.Logger())
-		// 注册 所有模块API
+		// 注册路由
 		for _, m := range api.Modules {
 			m.Init()
-			m.Router(server)
+			m.Route(server)
 		}
 	})
 }
+
 
 // Startup 启动HTTP 服务
 func Startup() {
@@ -77,5 +78,5 @@ func cleanup() {
 	}()
 	// 等待服务关闭完成.
 	<- stopped
-	logs.Logger.Info("HTTP server closed success.")
+	logs.Logger.Info("【 Cleanup server complete 】")
 }

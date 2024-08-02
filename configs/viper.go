@@ -11,7 +11,7 @@ import (
 
 // 默认配置文件路径
 const defaultConfigPath = "config-dev.yml"
-const configType = "yaml"
+const configType = "yml"
 
 // 运行模式
 var mode string
