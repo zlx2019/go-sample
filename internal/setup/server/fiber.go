@@ -62,7 +62,7 @@ func Startup() {
 
 // 通过信号关闭HTTP服务
 func cleanup() {
-	stop := make(chan os.Signal, 1)
+	stop := make(chan os.Signal)
 	signal.Notify(stop, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	// 等待信号
 	sig := <- stop
