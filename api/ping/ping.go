@@ -4,10 +4,18 @@
 
 package ping
 
-// Ping API
-type Ping struct {}
+import "go-sample/internal/service"
 
+// ApiPing API
+type ApiPing struct {
+	serv *service.PingService
+}
 
-// Init Ping-模块初始化
-func (p *Ping) Init() {
+// NewPing ApiPing 提供者
+func NewPing(serv *service.PingService) *ApiPing {
+	return &ApiPing{serv: serv}
+}
+
+// Init ApiPing-模块初始化
+func (p *ApiPing) Init() {
 }

@@ -1,8 +1,17 @@
 package example
 
-// Example API 示例
-type Example struct {
+import "go-sample/internal/service"
+
+// ApiExample Api
+type ApiExample struct {
+	serv *service.ExampleService
 }
-// Init of Example
-func (e *Example) Init() {
+
+// NewExample 提供者
+func NewExample(serv *service.ExampleService) *ApiExample {
+	return &ApiExample{serv: serv}
+}
+
+// Init 初始化
+func (e *ApiExample) Init() {
 }

@@ -17,17 +17,17 @@ func Setup() {
 		c := global.Conf.Redis
 		pool := c.Pool
 		_client = redis.NewClient(&redis.Options{
-			Addr:                       c.Addr(),
-			ClientName:                 global.Conf.Server.Name,
-			OnConnect: onConnectHook,
-			Username:                   c.Username,
-			Password:                   c.Password,
-			DB:                         c.DB,
-			ContextTimeoutEnabled:      true,
-			PoolSize:                   pool.MaxSize,
-			MinIdleConns:               pool.MinIdleConnNum,
-			MaxIdleConns:               pool.MaxIdleConnNum,
-			ConnMaxIdleTime:            pool.ConnMaxIdleTime,
+			Addr:                  c.Addr(),
+			ClientName:            global.Conf.Server.Name,
+			OnConnect:             onConnectHook,
+			Username:              c.Username,
+			Password:              c.Password,
+			DB:                    c.DB,
+			ContextTimeoutEnabled: true,
+			PoolSize:              pool.MaxSize,
+			MinIdleConns:          pool.MinIdleConnNum,
+			MaxIdleConns:          pool.MaxIdleConnNum,
+			ConnMaxIdleTime:       pool.ConnMaxIdleTime,
 		})
 		// ping
 		pong, err := _client.Ping(context.Background()).Result()
