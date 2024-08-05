@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"go-sample/api"
 	"go-sample/internal/global"
 	"go-sample/internal/middlewares"
 	logs "go-sample/internal/setup/logger"
@@ -43,8 +42,9 @@ func setup() {
 		})
 		// 注册中间件
 		server.Use(recover.New(),middlewares.Cors(), middlewares.Logger())
-		// 注册路由
-		for _, m := range api.Modules {
+		// 初始化 && 注册路由
+		modules, _ := initModules(global.Dc, global.Rc)
+		for _, m := range modules {
 			m.Init()
 			m.Route(server)
 		}

@@ -25,5 +25,5 @@ func registerModule(modules ...Module) {
 
 // 初始化模块路由
 func init() {
-	registerModule(&ping.Ping{})
+	registerModule(&ping.ApiPing{})
 }

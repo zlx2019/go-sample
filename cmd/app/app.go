@@ -2,7 +2,7 @@
 // @Description $END$
 // @Author Zero - 2024/7/25 21:54:49
 
-package app
+package main
 
 import (
 	"go-sample/configs"
@@ -14,8 +14,8 @@ import (
 	"go-sample/internal/setup/server"
 )
 
-// Startup App 服务启动入口
-func Startup() {
+// App 服务
+func main() {
 	// ===================== Startup ===============================
 	// 初始化日志组件
 	logs.Setup()
@@ -28,9 +28,7 @@ func Startup() {
 	pool.Setup()
 	// 初始化并启动 HTTP 服务
 	server.Startup()
-
 	// Running...
-
 	// ===================== CleanUp ===============================
 	// 释放数据库连接池
 	database.CleanUp()

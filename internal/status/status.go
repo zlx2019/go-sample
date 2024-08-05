@@ -9,16 +9,20 @@ import (
 
 const (
 	successCode = 0
-	successMsg = "OK"
+	successMsg  = "OK"
 )
 
+// R Map Alias
 type R map[string]any
 
 // Response 统一响应
+// Code 响应码 0为成功，非0失败
+// Msg  响应消息
+// Data 响应数据
 type Response struct {
 	Code int    `json:"code"`
 	Msg  string `json:"message"`
-	Data any    `json:"data"`
+	Data any    `json:"date"`
 }
 
 // Ok 成功响应
@@ -59,7 +63,7 @@ func OfErr(err error) Response {
 	} else {
 		if err.Error() == "" {
 			response.Msg = errs.FailErr.Message
-		}else {
+		} else {
 			response.Msg = err.Error()
 		}
 	}
@@ -76,4 +80,3 @@ func of(err *errs.Error) Response {
 		Msg:  err.Message,
 	}
 }
-

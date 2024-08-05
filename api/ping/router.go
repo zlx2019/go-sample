@@ -8,12 +8,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-
-// Route Ping api路由
-func (p *Ping) Route(app *fiber.App) {
+// Route ApiPing api路由
+func (p *ApiPing) Route(app *fiber.App) {
 	router := app.Group("/ping")
-	router.Get("", p.Ping)
-	router.Get("/pool", p.PoolStatus)
-	router.Get("/db", p.DBStatus)
-	router.Get("/redis", p.RedisStatus)
+	router.Get("", p.ping)
+	router.Get("/pool", p.poolStatus)
+	router.Get("/db", p.dbStatus)
+	router.Get("/redis", p.redisStatus)
 }
