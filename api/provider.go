@@ -1,5 +1,6 @@
 package api
 
+
 import (
 	"github.com/google/wire"
 	"go-sample/api/example"

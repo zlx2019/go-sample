@@ -23,6 +23,7 @@ func main() {
 	global.Conf, global.Viper = configs.Setup()
 	// 初始化数据库.
 	database.Setup()
+	// 初始化缓存
 	cache.Setup()
 	// 初始化协程池
 	pool.Setup()
@@ -32,6 +33,7 @@ func main() {
 	// ===================== CleanUp ===============================
 	// 释放数据库连接池
 	database.CleanUp()
+	// 释放缓存连接池
 	cache.CleanUp()
 	// 释放协程池
 	pool.CleanUp()
