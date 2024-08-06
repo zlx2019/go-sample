@@ -21,7 +21,7 @@ var configFile string
 
 func init() {
 	flag.StringVar(&mode, "m", constant.Dev, "server runtime mode.")
-	flag.StringVar(&configFile, "c", defaultConfigPath, "server config file.")
+	flag.StringVar(&configFile, "f", defaultConfigPath, "server config file.")
 	flag.Parse()
 }
 
