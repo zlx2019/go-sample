@@ -22,17 +22,17 @@ import (
 func initModules(db *gorm.DB, client *redis.Client) ([]api.Module, error) {
 	exampleRepo := dao.NewExampleRepo(db)
 	exampleService := service.NewExampleService(exampleRepo)
-	apiExample := example.NewExample(exampleService)
+	exampleExample := example.NewExample(exampleService)
 	pingRepo := dao.NewPingRepo(db)
 	pingService := service.NewPingService(pingRepo, client)
-	apiPing := ping.NewPing(pingService)
-	v := ProvideModules(apiExample, apiPing)
+	pingPing := ping.NewPing(pingService)
+	v := ProvideModules(exampleExample, pingPing)
 	return v, nil
 }
 
 // wire.go:
 
-func ProvideModules(exam *example.ApiExample, ping2 *ping.ApiPing) []api.Module {
+func ProvideModules(exam *example.Example, ping2 *ping.Ping) []api.Module {
 	return []api.Module{
 		exam, ping2,
 	}

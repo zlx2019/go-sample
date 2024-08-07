@@ -42,11 +42,11 @@ func setup() {
 		})
 		// 注册中间件
 		server.Use(recover.New(),middlewares.Cors(), middlewares.Logger())
-		// 初始化 && 注册路由
+		// 初始化所有模块 && 注册路由
 		modules, _ := initModules(global.Dc, global.Rc)
 		for _, m := range modules {
 			m.Init()
-			m.Route(server)
+			server.Route(m.Name(), m.Route(), m.Name())
 		}
 	})
 }

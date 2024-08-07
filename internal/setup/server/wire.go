@@ -21,7 +21,7 @@ func initModules(*gorm.DB,*redis.Client) ([]api.Module, error) {
 	return nil,nil
 }
 
-func ProvideModules(exam *example.ApiExample, ping *ping.ApiPing) []api.Module {
+func ProvideModules(exam *example.Example, ping *ping.Ping) []api.Module {
 	return []api.Module{
 		exam,
 		ping,

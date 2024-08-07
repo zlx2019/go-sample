@@ -6,16 +6,23 @@ package ping
 
 import "go-sample/internal/service"
 
-// ApiPing API
-type ApiPing struct {
+const name = "ping"
+
+// Ping 服务状态探测模块
+type Ping struct {
 	serv *service.PingService
 }
 
-// NewPing ApiPing 提供者
-func NewPing(serv *service.PingService) *ApiPing {
-	return &ApiPing{serv: serv}
+// Name Ping 模块名 && 路由前缀
+func (p *Ping) Name() string {
+	return name
 }
 
-// Init ApiPing-模块初始化
-func (p *ApiPing) Init() {
+// NewPing Ping 提供者
+func NewPing(serv *service.PingService) *Ping {
+	return &Ping{serv: serv}
+}
+
+// Init Ping-模块初始化
+func (p *Ping) Init() {
 }

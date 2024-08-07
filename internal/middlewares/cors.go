@@ -2,13 +2,11 @@ package middlewares
 
 import (
 	. "github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"strings"
 )
 
 // Cors Fiber 跨域中间件
 func Cors() Handler {
-	cors.New()
 	return func(c *Ctx) error {
 		origin := string(c.Request().Header.Peek(HeaderOrigin))
 		if origin != "" {

@@ -5,8 +5,8 @@ import (
 	"go-sample/internal/status"
 )
 
-// ApiExample 路由处理
+// Example 路由处理
 
-func (e *ApiExample) Hello(ctx *fiber.Ctx) error {
+func (e *Example) Hello(ctx *fiber.Ctx) error {
 	return status.Ok(ctx, "hello world")
 }

@@ -8,11 +8,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// Route ApiPing api路由
-func (p *ApiPing) Route(app *fiber.App) {
-	router := app.Group("/ping")
-	router.Get("", p.ping)
-	router.Get("/pool", p.poolStatus)
-	router.Get("/db", p.dbStatus)
-	router.Get("/redis", p.redisStatus)
+// Route on Ping module
+func (p *Ping) Route() func(router fiber.Router) {
+	return func(router fiber.Router) {
+		router.Get("", p.ping)
+		router.Get("/pool", p.poolStatus)
+		router.Get("/db", p.dbStatus)
+		router.Get("/redis", p.redisStatus)
+	}
 }

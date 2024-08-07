@@ -9,13 +9,13 @@ import (
 	"runtime"
 )
 
-// Ping 服务状态探测
-func (p *ApiPing) ping(ctx *fiber.Ctx) error {
+// 服务状态探测
+func (p *Ping) ping(ctx *fiber.Ctx) error {
 	return status.Ok(ctx, "OK")
 }
 
-// PoolStatus 查看服务协程池状态信息
-func (p *ApiPing) poolStatus(ctx  *fiber.Ctx) error {
+// 查看服务协程池状态信息
+func (p *Ping) poolStatus(ctx  *fiber.Ctx) error {
 	pool := global.Pool
 	reply := PoolStatusReply{
 		IsClosed:      pool.IsClosed(),
@@ -29,7 +29,7 @@ func (p *ApiPing) poolStatus(ctx  *fiber.Ctx) error {
 }
 
 // 查看 Redis 连接信息
-func (p *ApiPing) redisStatus(ctx *fiber.Ctx) error {
+func (p *Ping) redisStatus(ctx *fiber.Ctx) error {
 	state, err := clone.Clone[RedisStatusReply](p.serv.RedisStatus())
 	if err != nil {
 		return errs.FailErr
@@ -38,6 +38,6 @@ func (p *ApiPing) redisStatus(ctx *fiber.Ctx) error {
 }
 
 // DBStatus 查看数据库状态信息
-func (p *ApiPing) dbStatus(ctx *fiber.Ctx) error {
+func (p *Ping) dbStatus(ctx *fiber.Ctx) error {
 	return nil
 }
