@@ -52,5 +52,5 @@ func onConnectHook(ctx context.Context, conn *redis.Conn) error {
 // CleanUp 释放Redis连接
 func CleanUp() {
 	_ = _client.Close()
-	logs.Logger.Info("【 Cleanup redis complete 】")
+	logs.Logger.Info("[Cleanup redis complete]")
 }

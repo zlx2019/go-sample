@@ -46,7 +46,7 @@ func CleanUp() {
 	// 等待所有协程任务结束 or 超时
 	if err := pool.ReleaseTimeout(time.Second * 10); err != nil {
 		logs.Logger.ErrorSf("cleanup coroutine pool timeout: %s", err.Error())
-	}else {
-		logs.Logger.Info("【 Cleanup coroutine pool complete】")
+	} else {
+		logs.Logger.Info("[Cleanup coroutine pool complete]")
 	}
 }

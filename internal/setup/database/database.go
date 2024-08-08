@@ -31,8 +31,8 @@ func Setup() {
 		}
 		// 配置连接池
 		if db, err := gdb.DB(); err == nil {
-			db.SetMaxOpenConns(dbConf.Pool.MaxOpenConn)	// 能打开数据库连接的最大数量
-			db.SetMaxIdleConns(dbConf.Pool.MaxIdleConn)	// 空闲连接最大数量
+			db.SetMaxOpenConns(dbConf.Pool.MaxOpenConn)    // 能打开数据库连接的最大数量
+			db.SetMaxIdleConns(dbConf.Pool.MaxIdleConn)    // 空闲连接最大数量
 			db.SetConnMaxLifetime(dbConf.Pool.MaxLifeTime) // 连接可复用最大时间
 		}
 		// 自动创建表
@@ -48,11 +48,11 @@ func Setup() {
 }
 
 // CleanUp 关闭数据库连接池
-func CleanUp()  {
-	if db, err := _db.DB(); err == nil{
+func CleanUp() {
+	if db, err := _db.DB(); err == nil {
 		// 关闭连接池
 		_ = db.Close()
-		logs.Logger.Info("【 Cleanup database complete 】")
+		logs.Logger.Info("[Cleanup database complete]")
 	}
 }
 
