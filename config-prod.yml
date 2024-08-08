@@ -1,0 +1,49 @@
+# 服务相关配置
+server:
+  name: app-sample
+  host: 0.0.0.0
+  port: 12001
+  mode: release
+
+# 数据库配置
+db:
+  host: 172.22.224.1
+  port: 3306
+  username: root
+  password: root
+  dbName: sample
+  createTable: true
+  debug: true
+  slowSql: 3s
+  # 数据库连接池
+  pool:
+    maxOpenConn: 300  # 最大连接
+    maxIdleConn: 10   # 最小空闲连接数
+    maxLifeTime: 1h   # 连接复用最大时长
+
+# redis 配置
+redis:
+  host: 172.22.224.1
+  port: 6379
+  username:
+  password:
+  db: 0
+  pool:
+    maxSize: 100
+    minIdleConnNum: 20
+    maxIdleConnNum: 40
+    ConnMaxIdleTime: 10m
+
+# 协程池配置
+pool:
+  size: 3000            # 池的最大容量
+  disablePurge: false   # true 表示不回收空闲的协程
+  expiryDuration: 10s   # 协程最大空闲时长
+  preAlloc: false       # 初始化时预先分配
+  nonblocking: false    # 是否为非阻塞模式,
+  maxBlockingTasks: 300 # 阻塞模式下，可等待的最大任务数
+  closeTimeout: 10s     # 关闭池子时 阻塞等待时长
+
+
+
+
