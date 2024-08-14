@@ -6,6 +6,8 @@ package ping
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"go-sample/internal/status"
+	"go-sample/internal/status/errs"
 )
 
 // Route on Ping module
@@ -15,5 +17,12 @@ func (p *Ping) Route() func(router fiber.Router) {
 		router.Get("/pool", p.poolStatus)
 		router.Get("/db", p.dbStatus)
 		router.Get("/redis", p.redisStatus)
+		router.Post("/test", func(ctx *fiber.Ctx) error {
+			var body map[string]any
+			if err := ctx.BodyParser(&body); err != nil {
+				return errs.FailErr
+			}
+			return status.Ok(ctx, body)
+		})
 	}
 }

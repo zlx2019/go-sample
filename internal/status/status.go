@@ -22,7 +22,7 @@ type R map[string]any
 type Response struct {
 	Code int    `json:"code"`
 	Msg  string `json:"message"`
-	Data any    `json:"date"`
+	Data any    `json:"data"`
 }
 
 // Ok 成功响应
