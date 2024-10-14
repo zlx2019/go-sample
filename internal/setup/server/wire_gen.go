@@ -9,6 +9,7 @@ package server
 import (
 	"github.com/redis/go-redis/v9"
 	"go-sample/api"
+	"go-sample/api/email"
 	"go-sample/api/example"
 	"go-sample/api/ping"
 	"go-sample/internal/dao"
@@ -26,14 +27,15 @@ func initModules(db *gorm.DB, client *redis.Client) ([]api.Module, error) {
 	pingRepo := dao.NewPingRepo(db)
 	pingService := service.NewPingService(pingRepo, client)
 	pingPing := ping.NewPing(pingService)
-	v := ProvideModules(exampleExample, pingPing)
+	emailEmail := email.NewEmail()
+	v := ProvideModules(exampleExample, pingPing, emailEmail)
 	return v, nil
 }
 
 // wire.go:
 
-func ProvideModules(exam *example.Example, ping2 *ping.Ping) []api.Module {
+func ProvideModules(exam *example.Example, ping2 *ping.Ping, email2 *email.Email) []api.Module {
 	return []api.Module{
-		exam, ping2,
+		exam, ping2, email2,
 	}
 }
