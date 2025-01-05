@@ -39,6 +39,7 @@ func Setup() (*Config, *viper.Viper) {
 	// 监听配置文件，动态更新
 	vp.WatchConfig()
 	vp.OnConfigChange(func(e fsnotify.Event) {
+		logs.Logger.InfoSf("config file changed")
 		if err = vp.Unmarshal(&config); err != nil {
 			fmt.Println(err)
 		}

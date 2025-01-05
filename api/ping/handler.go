@@ -15,7 +15,7 @@ func (p *Ping) ping(ctx *fiber.Ctx) error {
 }
 
 // 查看服务协程池状态信息
-func (p *Ping) poolStatus(ctx  *fiber.Ctx) error {
+func (p *Ping) poolStatus(ctx *fiber.Ctx) error {
 	pool := global.Pool
 	reply := PoolStatusReply{
 		IsClosed:      pool.IsClosed(),

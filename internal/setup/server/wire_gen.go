@@ -12,8 +12,8 @@ import (
 	"go-sample/api/email"
 	"go-sample/api/example"
 	"go-sample/api/ping"
-	"go-sample/internal/dao"
 	"go-sample/internal/service"
+	"go-sample/internal/store"
 	"gorm.io/gorm"
 )
 
@@ -21,11 +21,11 @@ import (
 
 // 模块依赖注入，获取API路由列表
 func initModules(db *gorm.DB, client *redis.Client) ([]api.Module, error) {
-	exampleRepo := dao.NewExampleRepo(db)
-	exampleService := service.NewExampleService(exampleRepo)
+	exampleStore := store.NewExampleStore(db)
+	exampleService := service.NewExampleService(exampleStore)
 	exampleExample := example.NewExample(exampleService)
-	pingRepo := dao.NewPingRepo(db)
-	pingService := service.NewPingService(pingRepo, client)
+	pingStore := store.NewPingStore(db)
+	pingService := service.NewPingService(pingStore, client)
 	pingPing := ping.NewPing(pingService)
 	emailEmail := email.NewEmail()
 	v := ProvideModules(exampleExample, pingPing, emailEmail)

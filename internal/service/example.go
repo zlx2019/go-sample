@@ -1,13 +1,13 @@
 package service
 
-import "go-sample/internal/dao"
+import "go-sample/internal/store"
 
 // ExampleService Example 业务层
 type ExampleService struct {
-	repo *dao.ExampleRepo
+	store *store.ExampleStore
 }
 
 // NewExampleService 提供者
-func NewExampleService(repo *dao.ExampleRepo) *ExampleService {
-	return &ExampleService{repo: repo}
+func NewExampleService(store *store.ExampleStore) *ExampleService {
+	return &ExampleService{store: store}
 }
