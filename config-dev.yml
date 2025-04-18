@@ -7,10 +7,10 @@ server:
 
 # 数据库配置
 db:
-  host: 127.0.0.1
+  host: 120.25.176.172
   port: 3306
   username: root
-  password: root
+  password: rootROOT@1234
   dbName: sample
   createTable: true
   debug: true
@@ -23,10 +23,10 @@ db:
 
 # redis 配置
 redis:
-  host: 127.0.0.1
+  host: 120.25.176.172
   port: 6379
   username:
-  password:
+  password: rootROOT@1234
   db: 0
   pool:
     maxSize: 100
